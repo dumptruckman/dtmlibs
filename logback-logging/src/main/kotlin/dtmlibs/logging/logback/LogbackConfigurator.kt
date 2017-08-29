@@ -35,7 +35,7 @@ import ch.qos.logback.core.spi.ContextAwareBase
 /**
  * A basic configurator for convenience in configuring logback
  */
-open internal class LogbackConfigurator : ContextAwareBase(), Configurator {
+open class LogbackConfigurator : ContextAwareBase(), Configurator {
     override fun configure(lc: LoggerContext) {
         addInfo("Setting up logging configuration.")
 
