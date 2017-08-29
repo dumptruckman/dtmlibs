@@ -14,10 +14,10 @@ plugins {
     id 'net.minecrell.licenser' version '0.3'
 }
 
-task copyJars(type: Copy) {
-    from subprojects.collect { it.tasks.withType(Jar) }
-    into "$buildDir/libs"
-}
+//task copyJars(type: Copy) {
+//    from subprojects.collect { it.tasks.withType(Jar) }
+//    into "$buildDir/libs"
+//}
 
 allprojects {
     group 'com.dumptruckman.dtmlibs'
@@ -75,6 +75,10 @@ subprojects {
         header rootProject.file("license/MIT_HEADER.txt")
         include '**/*.kt'
         newLine false
+    }
+
+    artifacts {
+        archives sourcesJar
     }
 }
 
