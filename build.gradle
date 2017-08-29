@@ -14,15 +14,25 @@ plugins {
     id 'net.minecrell.licenser' version '0.3'
 }
 
-group 'com.dumptruckman.dtmlibs'
-version '1.0-SNAPSHOT'
-
 task copyJars(type: Copy) {
     from subprojects.collect { it.tasks.withType(Jar) }
     into "$buildDir/libs"
 }
 
 allprojects {
+    group 'com.dumptruckman.dtmlibs'
+    version '1.0-SNAPSHOT'
+
+    license {
+        header rootProject.file("license/MIT_HEADER.txt")
+        include '**/*.kt'
+        newLine false
+    }
+}
+
+subprojects {
+    apply plugin: 'maven'
+    apply plugin: 'net.minecrell.licenser'
     apply plugin: 'kotlin'
 
     repositories {
@@ -39,17 +49,6 @@ allprojects {
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
-
-    license {
-        header rootProject.file("license/MIT_HEADER.txt")
-        include '**/*.kt'
-        newLine false
-    }
-}
-
-subprojects {
-    apply plugin: 'maven'
-    apply plugin: 'net.minecrell.licenser'
 
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier 'sources'
