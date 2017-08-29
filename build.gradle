@@ -17,6 +17,11 @@ plugins {
 group 'com.dumptruckman.dtmlibs'
 version '1.0-SNAPSHOT'
 
+task copyJars(type: Copy) {
+    from subprojects.collect { it.tasks.withType(Jar) }
+    into "$buildDir/libs"
+}
+
 allprojects {
     apply plugin: 'kotlin'
 
