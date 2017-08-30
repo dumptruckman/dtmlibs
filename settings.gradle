@@ -1,3 +1,4 @@
 rootProject.name = 'dtmlibs'
 include 'logging'
 include 'logback-logging'
+include 'config'
