@@ -90,7 +90,7 @@ object Logging {
                 KotlinLogging.logger("${logNames[logOwner]}/${clazz.simpleName}")
             })
         } else {
-            return logCache.getOrPut(clazz, { KotlinLogging.logger(clazz.simpleName) })
+            return logCache.getOrPut(clazz, { KotlinLogging.logger(clazz.name) })
         }
     }
 
