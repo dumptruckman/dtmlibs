@@ -32,7 +32,18 @@ interface LoggerCache {
 
     /**
      * Returns the cached logger for the given loggable. If no logger exists in the cache, one is created using
-     * the defaultProvider and stored in the cache.
+     * the defaultValue and stored in the cache.
      */
     fun getOrPut(loggable: Loggable, defaultValue: (Loggable) -> KLogger): KLogger
+
+    /**
+     * Returns the cached logger for the given class. If no logger exists in the cache, one is created using the
+     * defaultValue and stored in the cache.
+     */
+    fun getOrPut(clazz: Class<*>, defaultValue: (Class<*>) -> KLogger): KLogger
+
+    /**
+     * Removes any cached logger for the given class.
+     */
+    fun remove(clazz: Class<*>)
 }

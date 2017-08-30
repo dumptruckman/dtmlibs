@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap
  * Loggers obtained from this object will be named based on the name of each [Loggable]'s [LogOwner].
  * The default name format is `logOwnerSimpleClassName/loggableSimpleClassName`.
  *
- * A [LogOwner] can be registered with a custom name via [Logging.registerLogOwner]. The name format will then be
+ * A [LogOwner] can be registered with a custom name via [Logging.registerLogOwnerName]. The name format will then be
  * `logOwnerCustomName/loggableSimpleClassName`.
  */
 object Logging {
@@ -47,6 +47,7 @@ object Logging {
     }
 
     private val logNames = ConcurrentHashMap<Class<out LogOwner>, String>()
+    private val randomClasses = ConcurrentHashMap<Class<*>, Class<out LogOwner>>()
     private var logCache: LoggerCache = SimpleLoggerCache()
 
     /**
@@ -58,7 +59,7 @@ object Logging {
      * @param name The name to register the log owner with.
      */
     @JvmStatic
-    fun registerLogOwner(logOwner: Class<out LogOwner>, name: CharSequence) {
+    fun registerLogOwnerName(logOwner: Class<out LogOwner>, name: CharSequence) {
         logNames[logOwner] = name.toString()
     }
 
@@ -68,11 +69,29 @@ object Logging {
     @JvmStatic
     fun getLogger(loggable: Loggable): KLogger {
         if (loggable.logOwner !in logNames) {
-            registerLogOwner(loggable.logOwner, loggable.logOwner.simpleName)
+            registerLogOwnerName(loggable.logOwner, loggable.logOwner.simpleName)
         }
         return logCache.getOrPut(loggable, {
             KotlinLogging.logger("${logNames[loggable.logOwner]}/${loggable::class.java.simpleName}")
         })
+    }
+
+    @JvmStatic
+    fun registerLogOwner(loggableClass: Class<*>, logOwner: Class<out LogOwner>) {
+        randomClasses.put(loggableClass, logOwner)
+        logCache.remove(loggableClass)
+    }
+
+    @JvmStatic
+    fun getLogger(clazz: Class<*>): KLogger {
+        val logOwner = randomClasses[clazz]
+        if (logOwner != null) {
+            return logCache.getOrPut(clazz, {
+                KotlinLogging.logger("${logNames[logOwner]}/${clazz.simpleName}")
+            })
+        } else {
+            return logCache.getOrPut(clazz, { KotlinLogging.logger(clazz.simpleName) })
+        }
     }
 
 }

@@ -31,10 +31,17 @@ import java.util.concurrent.ConcurrentHashMap
  */
 class SimpleLoggerCache : LoggerCache {
 
-    private val logMap = ConcurrentHashMap<Class<out Loggable>, KLogger>()
+    private val logMap = ConcurrentHashMap<Class<*>, KLogger>()
 
     override fun getOrPut(loggable: Loggable, defaultValue: (Loggable) -> KLogger): KLogger {
         return logMap.getOrPut(loggable::class.java, { defaultValue(loggable) })
     }
 
+    override fun getOrPut(clazz: Class<*>, defaultValue: (Class<*>) -> KLogger): KLogger {
+        return logMap.getOrPut(clazz, { defaultValue(clazz) })
+    }
+
+    override fun remove(clazz: Class<*>) {
+        logMap.remove(clazz)
+    }
 }
