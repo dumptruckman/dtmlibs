@@ -22,12 +22,6 @@ plugins {
 allprojects {
     group 'com.dumptruckman.dtmlibs'
     version '1.0-SNAPSHOT'
-
-    license {
-        header rootProject.file("license/MIT_HEADER.txt")
-        include '**/*.kt'
-        newLine false
-    }
 }
 
 subprojects {
@@ -81,6 +75,7 @@ subprojects {
     license {
         header rootProject.file("license/MIT_HEADER.txt")
         include '**/*.kt'
+        include '**/*.java'
         newLine false
     }
 
