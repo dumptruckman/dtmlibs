@@ -102,7 +102,7 @@ project(':config') {
     ext.configurateVersion = '3.1'
 
     dependencies {
-        compile 'com.googlecode.gentyref:gentyref:1.1.0'
+        compile 'com.coekie.gentyref:gentyref:1.3.0'
         compile "ninja.leaping.configurate:configurate-hocon:$configurateVersion"
         compile "ninja.leaping.configurate:configurate-json:$configurateVersion"
         compile "ninja.leaping.configurate:configurate-gson:$configurateVersion"

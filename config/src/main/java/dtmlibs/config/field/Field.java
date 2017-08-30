@@ -23,7 +23,7 @@
  */
 package dtmlibs.config.field;
 
-import com.googlecode.gentyref.GenericTypeReflector;
+import com.coekie.gentyref.GenericTypeReflector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import dtmlibs.config.annotation.Comment;
