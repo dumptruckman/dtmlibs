@@ -24,6 +24,7 @@
 package dtmlibs.config;
 
 import com.fasterxml.jackson.core.JsonGenerator.Feature;
+import dtmlibs.config.examples.KComprehensive;
 import org.junit.Before;
 import dtmlibs.config.datasource.DataSource;
 import dtmlibs.config.datasource.gson.GsonDataSource;
@@ -92,6 +93,7 @@ public class SerializableConfigTest extends TestBase {
     List<Object> list = new ArrayList<>();
 
     Comprehensive comprehensive = new Comprehensive();
+    KComprehensive kComprehensive = new KComprehensive();
 
     {
         list.add(someInt);
@@ -212,6 +214,7 @@ public class SerializableConfigTest extends TestBase {
         GsonDataSource.Builder builder = GsonDataSource.builder();
         DataSource dataSource = builder.setSink(sink).setSource(source).build();
         fileSerializeComprehensive(dataSource);
+        fileSerializeKComprehensive(dataSource);
         //fileSerializeCommonTypes(dataSource);
     }
 
@@ -221,6 +224,7 @@ public class SerializableConfigTest extends TestBase {
         builder.getFactory().enable(Feature.WRITE_NUMBERS_AS_STRINGS);
         DataSource dataSource = builder.setSink(sink).setSource(source).build();
         fileSerializeComprehensive(dataSource);
+        fileSerializeKComprehensive(dataSource);
         //fileSerializeCommonTypes(dataSource);
     }
 
@@ -229,6 +233,7 @@ public class SerializableConfigTest extends TestBase {
         YamlDataSource.Builder builder = YamlDataSource.builder();
         DataSource dataSource = builder.setSink(sink).setSource(source).build();
         fileSerializeComprehensive(dataSource);
+        fileSerializeKComprehensive(dataSource);
         //fileSerializeCommonTypes(dataSource);
     }
 
@@ -237,6 +242,7 @@ public class SerializableConfigTest extends TestBase {
         HoconDataSource.Builder builder = HoconDataSource.builder();
         DataSource dataSource = builder.setSink(sink).setSource(source).build();
         fileSerializeComprehensive(dataSource);
+        fileSerializeKComprehensive(dataSource);
         //fileSerializeCommonTypes(dataSource);
     }
 
@@ -255,6 +261,13 @@ public class SerializableConfigTest extends TestBase {
         Comprehensive comp = dataSource.load(Comprehensive.class);
         assertNotSame(comprehensive, comp);
         assertEquals(comprehensive, comp);
+    }
+
+    private void fileSerializeKComprehensive(DataSource dataSource) throws Exception {
+        dataSource.save(kComprehensive);
+        KComprehensive comp = dataSource.load(KComprehensive.class);
+        assertNotSame(kComprehensive, comp);
+        assertEquals(kComprehensive, comp);
     }
 
     private void fileSerializeCommonTypes(DataSource dataSource) throws Exception {
