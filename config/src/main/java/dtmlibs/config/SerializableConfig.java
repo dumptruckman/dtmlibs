@@ -23,13 +23,13 @@
  */
 package dtmlibs.config;
 
-import dtmlibs.logging.Logging;
-import mu.KLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import dtmlibs.config.annotation.SerializableAs;
 import dtmlibs.config.serializers.*;
 import dtmlibs.config.util.PrimitivesUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -184,7 +184,7 @@ public enum SerializableConfig {
             return null;
         }
         if (!(object instanceof String)) {
-            getLogger().warn("Serialized type key found in %s should be a string but is not.", data);
+            logger.warn("Serialized type key found in %s should be a string but is not.", data);
             return null;
         }
         String className = (String) object;
@@ -195,7 +195,7 @@ public enum SerializableConfig {
             try {
                 return Class.forName(className);
             } catch (ClassNotFoundException e) {
-                getLogger().warn("Found serialized type key '%s' but could not find an associated class.", className);
+                logger.warn("Found serialized type key '%s' but could not find an associated class.", className);
                 return null;
             }
         }
@@ -206,7 +206,5 @@ public enum SerializableConfig {
         return serializableAliases.get(className);
     }
 
-    private static KLogger getLogger() {
-        return Logging.getLogger(SerializableConfig.class);
-    }
+    private static Logger logger = LoggerFactory.getLogger(SerializableConfig.class);
 }

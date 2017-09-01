@@ -23,8 +23,6 @@
  */
 package dtmlibs.config.serializers;
 
-import dtmlibs.logging.Logging;
-import mu.KLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import dtmlibs.config.SerializableConfig;
@@ -34,6 +32,8 @@ import dtmlibs.config.serializers.NumberSerializer.AtomicIntegerSerializer;
 import dtmlibs.config.serializers.NumberSerializer.AtomicLongSerializer;
 import dtmlibs.config.serializers.NumberSerializer.BigNumberSerializer;
 import dtmlibs.config.util.PrimitivesUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
@@ -340,7 +340,7 @@ public final class SerializerSet {
             try {
                 return getSerializerInstance(serializeWith.value());
             } catch (Exception e) {
-                getLogger().warn("Class %s is annotated with SerializeWith and specified the serializer class %s but "
+                logger.warn("Class %s is annotated with SerializeWith and specified the serializer class %s but "
                                 + "could not obtain an instance of that serializer. Consider registering the serializer "
                                 + "manually.",
                         clazz, serializeWith.value());
@@ -560,7 +560,5 @@ public final class SerializerSet {
         DEFAULT_SET = new SerializerSet(serializers, new HashMap<>(), () -> DEFAULT_SERIALIZER, new HashMap<>(), inheritanceReplacements);
     }
 
-    private static KLogger getLogger() {
-        return Logging.getLogger(SerializerSet.class);
-    }
+    private static Logger logger = LoggerFactory.getLogger(SerializerSet.class);
 }

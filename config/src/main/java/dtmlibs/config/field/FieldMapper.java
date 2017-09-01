@@ -23,14 +23,14 @@
  */
 package dtmlibs.config.field;
 
-import dtmlibs.logging.Logging;
-import mu.KLogger;
 import org.jetbrains.annotations.NotNull;
 import dtmlibs.config.annotation.FauxEnum;
 import dtmlibs.config.annotation.IgnoreSuperFields;
 import dtmlibs.config.annotation.SerializeWith;
 import dtmlibs.config.serializers.SerializerSet;
 import dtmlibs.config.util.PrimitivesUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Modifier;
 import java.util.Arrays;
@@ -91,12 +91,12 @@ public class FieldMapper {
     }
 
     private Map<String, Field> mapFields() {
-        getLogger().trace("Mapping fields for %s", this);
+        logger.trace("Mapping fields for %s", this);
         java.lang.reflect.Field[] allFields = collectAllFieldsForClass(clazz);
         Map<String, Field> resultMap = new LinkedHashMap<String, Field>(allFields.length);
         for (java.lang.reflect.Field field : allFields) {
             Class fieldType = PrimitivesUtil.switchForWrapper(field.getType());
-            getLogger().trace("Mapping %s of type %s", field, fieldType);
+            logger.trace("Mapping %s of type %s", field, fieldType);
             if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers())) {
                 Field localField;
                 if (Map.class.isAssignableFrom(fieldType)
@@ -142,7 +142,5 @@ public class FieldMapper {
                 '}';
     }
 
-    private static KLogger getLogger() {
-        return Logging.getLogger(FieldMapper.class);
-    }
+    private static Logger logger = LoggerFactory.getLogger(FieldMapper.class);
 }
