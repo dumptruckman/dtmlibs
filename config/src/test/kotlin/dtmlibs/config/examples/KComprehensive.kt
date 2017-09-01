@@ -117,10 +117,10 @@ class KComprehensive : PropertiesWrapper() {
     var tInt = T_INT
     @ValidateWith(NameValidator::class)
     var name = NAME
-    var wordList: List<String> = ArrayList(WORD_LIST)
-    var wordList2: List<String> = ArrayList(WORD_LIST_2)
-    var listList: List<List<String>> = ArrayList(LIST_LIST)
-    var randomList: List<Any> = ArrayList(RANDOM_LIST)
+    var wordList: MutableList<String> = mutableListCopyOf(WORD_LIST)
+    var wordList2: MutableList<String> = mutableListCopyOf(WORD_LIST_2)
+    var listList: MutableList<List<String>> = mutableListCopyOf(LIST_LIST)
+    var randomList: MutableList<Any> = mutableListCopyOf(RANDOM_LIST)
     var stringObjectMap: Map<String, Any> = HashMap(STRING_OBJECT_MAP)
     val custom = Custom(CUSTOM.name)
     @SerializeWith(CustomSerializer2::class)
@@ -159,10 +159,10 @@ class KComprehensive : PropertiesWrapper() {
     private val testWildCardListVirtualProp: VirtualField<List<*>>? = null
     private val testWildCardVirtualProp: VirtualField<*>? = null
     private val testTypedVirtualProp: VirtualField<List<String>>? = null
-    private val genericList = ArrayList<Any?>()
+    private val genericList = mutableListOf<Any?>()
 
     @HandlePropertyWith(SimpleHandler::class)
-    var simpleList: MutableList<Simple> = ArrayList()
+    var simpleList: MutableList<Simple> = mutableListOf()
 
     init {
         simpleList.add(Simple("test"))
@@ -299,5 +299,11 @@ class KComprehensive : PropertiesWrapper() {
             DOUBLE_LIST.add(62342362.1231231251515)
             PropertyAliases.createAlias(KComprehensive::class.java, "cname", "custom", "name")
         }
+    }
+
+    private fun <T> mutableListCopyOf(list: List<T>): MutableList<T> {
+        val newList = mutableListOf<T>()
+        newList.addAll(list)
+        return newList;
     }
 }
